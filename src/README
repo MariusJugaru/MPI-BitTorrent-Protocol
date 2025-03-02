@@ -1,0 +1,9 @@
+When the script runs it creates a tracker and N peer threads.
+The peer threads read the data from their files and create a data structure where they save that data.
+Each peer sends the data to the tracker and waits for all the clients to do the same.
+After all the data has been received, the tracker signals the clients that they can start downloading and uploading with an ack message.
+Each peer starts a thread for downloading and uploading.
+When a thread starts downloading it asks the tracker for the seeders/peers swarm and the hashes for the file, so it can be sure that it receives the good segments.
+In order to keep a balance between the seeders/peers the download thread always tries choosing the first peer from the list and the tracker moves it to the back of the list with each swarm request. In that way the first peer should always be the least busy. If there are no peers we choose the first seeder, which is guaranteed to have the complete file. We send a request to check if that peer has the segment and if it does we can move to the next segment, if not we keep trying other peers until we finish the peer list and then move to the seeders list. We download the segments in order and simulate the "download". The client doesn't actually send the files but an ack, because the clients don't have the files, only the hashes. Once a file has been completely downloaded we let the tracker know so he can remove the client from the peers list and add it to the seeders list.
+If all the files have been downloaded by a client we let the tracker know so he can check if all the clients have finished.
+The upload thread wait for download requests. When it receives one it checks it's own files files, then the downloaded files. If it owns the segment of the file he sens an ack message, otherwise a nack one. If the upload thread receives a finish message from the tracker it ends it's executions.
