@@ -1,7 +1,7 @@
 # MPI BitTorrent Protocol
 
 ## Overview
-This project impleBitTorrent is a peer-to-peer (P2P) file-sharing protocol that enables decentralized distribution of files over the Internet.
+BitTorrent is a peer-to-peer (P2P) file-sharing protocol that enables decentralized distribution of files over the Internet.
 Instead of downloading from a central server, users (peers) share segments of a file among themselves, increasing efficiency and speed.
 
 ## How it works
